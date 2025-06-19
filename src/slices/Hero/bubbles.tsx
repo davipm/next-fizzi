@@ -68,7 +68,7 @@ export default function Bubbles({
       }
 
       o.updateMatrix();
-      meshRef.current.getMatrixAt(i, o.matrix);
+      meshRef.current.setMatrixAt(i, o.matrix);
     }
 
     meshRef.current.instanceMatrix.needsUpdate = true;
