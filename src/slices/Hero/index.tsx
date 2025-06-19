@@ -31,11 +31,9 @@ const Hero: FC<HeroProps> = ({ slice }) => {
   const ready = useStore((state) => state.ready);
   const isDesktop = useMediaQuery("(min-width: 768px)", true);
 
-  console.log({ ready, isDesktop });
-
   useGSAP(
     () => {
-      //if (!ready && isDesktop) return
+      if (!ready && isDesktop) return;
 
       const introTl = gsap.timeline();
 
@@ -133,12 +131,12 @@ const Hero: FC<HeroProps> = ({ slice }) => {
             <div className="hero-body text-2xl font-normal text-sky-950">
               <PrismicRichText field={slice.primary.body} />
             </div>
+            <Button
+              buttonLink={slice.primary.button_link}
+              buttonText={slice.primary.button_text}
+              className="hero-button mt-12"
+            />
           </div>
-
-          <Button
-            buttonLink={slice.primary.button_link}
-            buttonText={slice.primary.button_text}
-          />
         </div>
 
         <div className="text-side relative z-[80] grid h-screen items-center gap-4 md:grid-cols-2">
