@@ -31,6 +31,8 @@ const Hero: FC<HeroProps> = ({ slice }) => {
   const ready = useStore((state) => state.ready);
   const isDesktop = useMediaQuery("(min-width: 768px)", true);
 
+  console.log({ ready, isDesktop });
+
   useGSAP(
     () => {
       //if (!ready && isDesktop) return
