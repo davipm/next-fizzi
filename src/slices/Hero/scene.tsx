@@ -43,10 +43,10 @@ export default function Scene() {
     isReady();
 
     gsap.set(can1Ref.current.position, { x: -1.5 });
-    gsap.set(can1Ref.current.position, { z: -0.5 });
+    gsap.set(can1Ref.current.rotation, { z: -0.5 });
 
-    gsap.set(can2Ref.current.position, { z: 1.5 });
-    gsap.set(can2Ref.current.position, { z: 0.5 });
+    gsap.set(can2Ref.current.position, { x: 1.5 });
+    gsap.set(can2Ref.current.rotation, { z: 0.5 });
 
     gsap.set(can3Ref.current.position, { y: 5, z: 2 });
     gsap.set(can4Ref.current.position, { x: 2, y: 4, z: 2 });
