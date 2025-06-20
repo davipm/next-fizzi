@@ -9,10 +9,10 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { View } from "@react-three/drei";
 import { PrismicNextImage } from "@prismicio/next";
 
+import { useStore } from "@/hooks/use-store";
 import Bounded from "@/components/bounded";
 import useMediaQuery from "@/hooks/use-media-query";
 import TextSplitter from "@/components/text-splitter";
-import { useStore } from "@/hooks/use-store";
 import Button from "@/components/button";
 import Scene from "@/slices/Hero/scene";
 import Bubbles from "@/slices/Hero/bubbles";
