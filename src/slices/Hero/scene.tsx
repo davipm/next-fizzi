@@ -16,9 +16,7 @@ gsap.registerPlugin(useGSAP, ScrollTrigger);
  * Renders a 3D scene with animated floating cans and an environment background.
  * Initializes can positions and triggers GSAP-based intro and scroll animations.
  * Uses organization-specific hooks and components for state and rendering.
- */
-
-/**
+ *
  * Scene component renders and animates a group of floating cans in a 3D environment.
  */
 export default function Scene() {

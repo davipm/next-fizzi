@@ -13,6 +13,12 @@ import Scene from "@/slices/SkyDive/scene";
 export type SkyDiveProps = SliceComponentProps<Content.SkyDiveSlice>;
 
 /**
+ * Renders the SkyDive slice component, displaying a full-screen bounded section
+ * with an accessible heading and a 3D scene based on the provided slice content.
+ *
+ * @param slice - The SkyDive slice data from Prismic.
+ * @returns A React component with a 3D scene and associated content.
+ *
  * Component for "SkyDive" Slices.
  */
 const SkyDive: FC<SkyDiveProps> = ({ slice }) => {

@@ -1,9 +1,9 @@
 "use client";
 
-import React, { useRef, useEffect } from "react";
-import * as THREE from "three";
-import { useFrame } from "@react-three/fiber";
 import gsap from "gsap";
+import * as THREE from "three";
+import { useRef, useEffect, useMemo } from "react";
+import { useFrame } from "@react-three/fiber";
 
 /**
  * Renders an animated group of 3D bubbles using instanced meshes and GSAP for randomization.
@@ -41,12 +41,12 @@ export default function Bubbles({
   const o = useRef(new THREE.Object3D()).current;
 
   // Geometry and material are memoized to avoid recreation on each render
-  const geometry = React.useMemo(
+  const geometry = useMemo(
     () => new THREE.SphereGeometry(bubbleSize, 16, 16),
     [bubbleSize],
   );
 
-  const material = React.useMemo(
+  const material = useMemo(
     () =>
       new THREE.MeshStandardMaterial({
         transparent: true,
