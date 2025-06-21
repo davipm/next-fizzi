@@ -6,6 +6,15 @@ type Props = {
   wordDisplayStyle?: "inline-block" | "block";
 };
 
+/**
+ * Splits the provided text into words and characters,
+ * rendering each character in a separate span for fine-grained styling or animation.
+ *
+ * @param text - The string to be split and rendered.
+ * @param className - Optional additional class names for each word span.
+ * @param wordDisplayStyle - CSS display style for each word ("inline-block" or "block"). Defaults to "inline-block".
+ * @returns A React fragment containing the split text, or null if no text is provided.
+ */
 export default function TextSplitter({
   text,
   className,

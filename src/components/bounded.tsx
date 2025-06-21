@@ -7,6 +7,15 @@ type BoundedProps = {
   children: React.ReactNode;
 };
 
+/**
+ * Renders a layout container that centers its children within a maximum width,
+ * allowing customization of the root element and additional class names.
+ *
+ * @param as - The element type to render as the root (defaults to "section").
+ * @param className - Additional class names to apply to the root element.
+ * @param children - The content to be rendered inside the container.
+ * @param rest - Additional props passed to the root element.
+ */
 export default function Bounded({
   as: Comp = "section",
   className,
