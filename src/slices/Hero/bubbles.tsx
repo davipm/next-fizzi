@@ -1,11 +1,9 @@
 "use client";
 
-import gsap from "gsap";
+import React, { useRef, useEffect } from "react";
 import * as THREE from "three";
-import { useEffect, useRef } from "react";
 import { useFrame } from "@react-three/fiber";
-
-const o = new THREE.Object3D();
+import gsap from "gsap";
 
 /**
  * Renders an animated group of 3D bubbles using instanced meshes and GSAP for randomization.
@@ -18,25 +16,44 @@ const o = new THREE.Object3D();
  *
  * Bubbles float upwards, reset position when reaching a threshold, and adapt color to the document background.
  */
+
+type BubbleProps = {
+  count?: number;
+  speed?: number;
+  bubbleSize?: number;
+  opacity?: number;
+  repeat?: boolean;
+};
+
 export default function Bubbles({
   count = 300,
   speed = 5,
   bubbleSize = 0.05,
   opacity = 0.5,
   repeat = true,
-}) {
+}: BubbleProps) {
   const meshRef = useRef<THREE.InstancedMesh>(null);
-
-  const bubbleSpeed = useRef(new Float32Array(count));
+  const bubbleSpeed = useRef<Float32Array>(new Float32Array(count));
   const minSpeed = speed * 0.001;
   const maxSpeed = speed * 0.005;
 
-  const geometry = new THREE.SphereGeometry(bubbleSize, 16, 16);
+  // Shared Object3D for matrix operations
+  const o = useRef(new THREE.Object3D()).current;
 
-  const material = new THREE.MeshStandardMaterial({
-    transparent: true,
-    opacity,
-  });
+  // Geometry and material are memoized to avoid recreation on each render
+  const geometry = React.useMemo(
+    () => new THREE.SphereGeometry(bubbleSize, 16, 16),
+    [bubbleSize],
+  );
+
+  const material = React.useMemo(
+    () =>
+      new THREE.MeshStandardMaterial({
+        transparent: true,
+        opacity,
+      }),
+    [opacity],
+  );
 
   useEffect(() => {
     const mesh = meshRef.current;
@@ -48,27 +65,27 @@ export default function Bubbles({
         gsap.utils.random(-4, 4),
         gsap.utils.random(-4, 4),
       );
-
       o.updateMatrix();
       mesh.setMatrixAt(i, o.matrix);
       bubbleSpeed.current[i] = gsap.utils.random(minSpeed, maxSpeed);
     }
-
     mesh.instanceMatrix.needsUpdate = true;
 
     return () => {
-      mesh.geometry.dispose();
-      (mesh.material as THREE.Material).dispose();
+      geometry.dispose();
+      material.dispose();
     };
-  }, [count, maxSpeed, minSpeed]);
+  }, [count, minSpeed, maxSpeed, geometry, material, o]);
 
   useFrame(() => {
-    if (!meshRef.current) return;
+    const mesh = meshRef.current;
+    if (!mesh) return;
 
-    material.color = new THREE.Color(document.body.style.backgroundColor);
+    // Dynamically update bubble color to match background
+    material.color.setStyle(document.body.style.backgroundColor);
 
     for (let i = 0; i < count; i++) {
-      meshRef.current.getMatrixAt(i, o.matrix);
+      mesh.getMatrixAt(i, o.matrix);
       o.position.setFromMatrixPosition(o.matrix);
       o.position.y += bubbleSpeed.current[i];
 
@@ -79,19 +96,16 @@ export default function Bubbles({
       }
 
       o.updateMatrix();
-      meshRef.current.setMatrixAt(i, o.matrix);
+      mesh.setMatrixAt(i, o.matrix);
     }
-
-    meshRef.current.instanceMatrix.needsUpdate = true;
+    mesh.instanceMatrix.needsUpdate = true;
   });
 
   return (
     <instancedMesh
       ref={meshRef}
-      args={[undefined, undefined, count]}
+      args={[geometry, material, count]}
       position={[0, 0, 0]}
-      material={material}
-      geometry={geometry}
-    ></instancedMesh>
+    />
   );
 }
