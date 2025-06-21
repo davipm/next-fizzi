@@ -7,6 +7,17 @@ import { useFrame } from "@react-three/fiber";
 
 const o = new THREE.Object3D();
 
+/**
+ * Renders an animated group of 3D bubbles using instanced meshes and GSAP for randomization.
+ *
+ * @param count Number of bubbles to render.
+ * @param speed Base speed for bubble movement.
+ * @param bubbleSize Size of each bubble.
+ * @param opacity Opacity of the bubbles.
+ * @param repeat Whether bubbles should loop when reaching the top.
+ *
+ * Bubbles float upwards, reset position when reaching a threshold, and adapt color to the document background.
+ */
 export default function Bubbles({
   count = 300,
   speed = 5,
