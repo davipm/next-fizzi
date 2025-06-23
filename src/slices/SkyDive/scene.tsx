@@ -93,7 +93,7 @@ export default function Scene({ sentence, flavor }: Props) {
       return null;
     }
 
-    gsap.set(cloudsRef.current.position, { Z: 10 });
+    gsap.set(cloudsRef.current.position, { z: 10 });
 
     gsap.set(canRef.current.position, {
       ...getXYPositions(-4),
@@ -101,7 +101,7 @@ export default function Scene({ sentence, flavor }: Props) {
 
     gsap.set(
       wordsRef.current.children.map((word) => word.position),
-      { ...getXYPositions(7), Z: 2 },
+      { ...getXYPositions(7), z: 2 },
     );
 
     // Spinning can
