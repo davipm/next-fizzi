@@ -105,7 +105,7 @@ export default function Scene({ sentence, flavor }: Props) {
     );
 
     // Spinning can
-    gsap.to(canRef.current.position, {
+    gsap.to(canRef.current.rotation, {
       y: Math.PI * 2,
       duration: 1.7,
       repeat: -1,
@@ -149,7 +149,7 @@ export default function Scene({ sentence, flavor }: Props) {
     scrollTl
       .to("body", {
         backgroundColor: "#C0F0F5",
-        overflow: "auto",
+        overwrite: "auto",
         duration: 0.1,
       })
       .to(cloudsRef.current.position, { z: 0, duration: 0.3 }, 0)
@@ -188,8 +188,9 @@ export default function Scene({ sentence, flavor }: Props) {
           rotationIntensity={0}
           floatIntensity={3}
           floatSpeed={3}
-        />
-        <pointLight intensity={30} color="#8C0413" decay={0.6} />
+        >
+          <pointLight intensity={30} color="#8C0413" decay={0.6} />
+        </FloatingCan>
       </group>
 
       {/* Clouds */}
