@@ -77,6 +77,12 @@ export default function Scene({ sentence, flavor }: Props) {
       ...getXYPositions(-4),
     });
 
+    /**
+     * Collects the position objects of all child elements within the 'wordsRef' group (if any exist).
+     * This is used to animate the positions of each word in the 3D scene.
+     * If there are word children, their positions are set to a calculated starting point (using getXYPositions(7) and z: 2)
+     * so that GSAP can animate them as a group during the scene's entrance or scroll-triggered animations.
+     */
     const wordPositions =
       wordsRef.current &&
       Array.isArray(wordsRef.current.children) &&

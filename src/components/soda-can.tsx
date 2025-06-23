@@ -2,6 +2,7 @@
 
 import * as THREE from "three";
 import { useGLTF, useTexture } from "@react-three/drei";
+import { useMemo } from "react";
 
 useGLTF.preload("/Soda-can.gltf");
 
@@ -12,12 +13,6 @@ const flavorTextures = {
   strawberryLemonade: "/labels/strawberry.png",
   watermelon: "/labels/watermelon.png",
 };
-
-const metalMaterial = new THREE.MeshStandardMaterial({
-  roughness: 0.3,
-  metalness: 1,
-  color: "#bbbbbb",
-});
 
 export type SodaCanProps = {
   flavor?: keyof typeof flavorTextures;
@@ -33,13 +28,28 @@ export default function SodaCan({
 
   const labels = useTexture(flavorTextures);
 
-  labels.strawberryLemonade.flipY = false;
-  labels.blackCherry.flipY = false;
-  labels.watermelon.flipY = false;
-  labels.grape.flipY = false;
-  labels.lemonLime.flipY = false;
+  // Set flipY for all label textures in a loop for maintainability
+  Object.values(labels).forEach((label) => {
+    label.flipY = false;
+  });
 
   const label = labels[flavor];
+
+  // Memoize metalMaterial to avoid recreating on every render
+  const metalMaterial = useMemo(
+    () =>
+      new THREE.MeshStandardMaterial({
+        roughness: 0.3,
+        metalness: 1,
+        color: "#bbbbbb",
+      }),
+    [],
+  );
+
+  // Validate that required nodes exist before accessing their geometry
+  if (!nodes.cylinder || !nodes.cylinder_1 || !nodes.Tab) {
+    return null;
+  }
 
   return (
     <group {...props} dispose={null} scale={scale} rotation={[0, -Math.PI, 0]}>
