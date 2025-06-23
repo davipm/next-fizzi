@@ -25,7 +25,7 @@ export default function Bounded({
   return (
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-expect-error
-    <Comp className={clsx("first: px-4 pt-10 md:px-6", className)} {...rest}>
+    <Comp className={clsx("px-4 first:pt-10 md:px-6", className)} {...rest}>
       <div className="mx-auto flex w-full max-w-7xl flex-col items-center">
         {children}
       </div>

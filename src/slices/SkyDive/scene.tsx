@@ -3,7 +3,7 @@
 import gsap from "gsap";
 import * as THREE from "three";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { useRef } from "react";
+import { useCallback, useMemo, useRef } from "react";
 import { Content } from "@prismicio/client";
 import { useGSAP } from "@gsap/react";
 
@@ -18,6 +18,14 @@ type Props = {
   flavor: Content.SkyDiveSliceDefaultPrimary["flavor"];
 };
 
+/**
+ * Renders an animated 3D scene with a floating can, clouds, and text using THREE.js and GSAP.
+ * Handles entrance, looping, and scroll-triggered animations for scene elements.
+ *
+ * @param sentence - The text to display in the scene.
+ * @param flavor - The flavor data for the can component.
+ * @returns A group containing the animated 3D scene elements.
+ */
 export default function Scene({ sentence, flavor }: Props) {
   const groupRef = useRef<THREE.Group>(null);
   const canRef = useRef<THREE.Group>(null);
@@ -26,22 +34,31 @@ export default function Scene({ sentence, flavor }: Props) {
   const cloudsRef = useRef<THREE.Group>(null);
   const wordsRef = useRef<THREE.Group>(null);
 
-  const ANGLE = 75 * (Math.PI / 180);
+  const ANGLE = useMemo(() => 75 * (Math.PI / 180), []);
 
-  const getXPosition = (distance: number) => {
-    return distance * Math.cos(ANGLE);
-  };
+  const getXPosition = useCallback(
+    (distance: number) => {
+      return distance * Math.cos(ANGLE);
+    },
+    [ANGLE],
+  );
 
-  const getYPosition = (distance: number) => {
-    return distance * Math.sin(ANGLE);
-  };
+  const getYPosition = useCallback(
+    (distance: number) => {
+      return distance * Math.sin(ANGLE);
+    },
+    [ANGLE],
+  );
 
-  const getXYPositions = (distance: number) => {
-    return {
-      x: getXPosition(distance),
-      y: getYPosition(-1 * distance),
-    };
-  };
+  const getXYPositions = useCallback(
+    (distance: number) => {
+      return {
+        x: getXPosition(distance),
+        y: getYPosition(-1 * distance),
+      };
+    },
+    [getXPosition, getYPosition],
+  );
 
   useGSAP(() => {
     if (
@@ -60,10 +77,16 @@ export default function Scene({ sentence, flavor }: Props) {
       ...getXYPositions(-4),
     });
 
-    gsap.set(
-      wordsRef.current.children.map((word) => word.position),
-      { ...getXYPositions(7), z: 2 },
-    );
+    const wordPositions =
+      wordsRef.current &&
+      Array.isArray(wordsRef.current.children) &&
+      wordsRef.current.children.length > 0
+        ? Array.from(wordsRef.current.children).map((word) => word.position)
+        : [];
+
+    if (wordPositions.length > 0) {
+      gsap.set(wordPositions, { ...getXYPositions(7), z: 2 });
+    }
 
     // Spinning can
     gsap.to(canRef.current.rotation, {
@@ -121,7 +144,7 @@ export default function Scene({ sentence, flavor }: Props) {
         ease: "back.out(1.7)",
       })
       .to(
-        wordsRef.current.children.map((word) => word.position),
+        wordPositions,
         {
           keyframes: [
             { x: 0, y: 0, z: -1 },
