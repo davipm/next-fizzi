@@ -78,7 +78,7 @@ export default function Scene({ sentence, flavor }: Props) {
   const getXYPositions = (distance: number) => {
     return {
       x: getXPosition(distance),
-      Y: getYPosition(-1 * distance),
+      y: getYPosition(-1 * distance),
     };
   };
 
