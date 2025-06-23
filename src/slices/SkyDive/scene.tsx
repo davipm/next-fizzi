@@ -7,50 +7,11 @@ import { useRef } from "react";
 import { Content } from "@prismicio/client";
 import { useGSAP } from "@gsap/react";
 
-import { Cloud, Clouds, Environment, Text } from "@react-three/drei";
-import useMediaQuery from "@/hooks/use-media-query";
+import { Cloud, Clouds, Environment } from "@react-three/drei";
 import FloatingCan from "@/components/floating-can";
+import ThreeText from "@/components/three-text";
 
 gsap.registerPlugin(useGSAP, ScrollTrigger);
-
-/**
- * Renders a sentence as individual 3D text words using the @react-three/drei Text component.
- * Each word is displayed in uppercase, with responsive scaling based on screen size.
- *
- * @param sentence - The sentence to render as 3D text.
- * @param color - Optional color for the text. Defaults to "white".
- */
-function ThreeText({
-  sentence,
-  color = "white",
-}: {
-  sentence: string;
-  color?: string;
-}) {
-  const words = sentence.toUpperCase().split(" ");
-  const material = new THREE.MeshLambertMaterial();
-  const isDesktop = useMediaQuery("(min-width: 950px)", true);
-
-  return (
-    <>
-      {words.map((word, wordIndex) => (
-        <Text
-          key={`${wordIndex}-${word}`}
-          scale={isDesktop ? 1 : 0.5}
-          color={color}
-          material={material}
-          font="/fonts/Alpino-Variable.woff"
-          fontWeight={900}
-          anchorX="center"
-          anchorY="middle"
-          characters="ABCDEFGHIJKLMNOPQRSTUVWXYZ!,.?'"
-        >
-          {word}
-        </Text>
-      ))}
-    </>
-  );
-}
 
 type Props = {
   sentence: string | null;
