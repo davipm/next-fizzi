@@ -1,3 +1,5 @@
+![Website screenshot](/img.png)
+
 # Prismic + Next.js Minimal Starter
 
 Want to quickly get started building your own project with [Prismic][prismic] and [Next.js][nextjs]? This project includes basic configurations and nothing else. The project includes one Rich Text slice, a homepage, and a dynamic page.
